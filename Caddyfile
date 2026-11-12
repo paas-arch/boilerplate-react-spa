@@ -1,0 +1,27 @@
+# Не меняй этот файл: по нему образ раздаёт приложение, отвечает панели на /health и пересылает /api бэкенду.
+{
+	admin off
+	auto_https off
+	persist_config off
+}
+
+:{$APP_PORT:8080} {
+	# Панель понимает по нему, что приложение запущено; бэкенд для ответа не нужен.
+	handle /health {
+		respond "ok" 200
+	}
+
+	# Адрес бэкенда приходит при запуске: смена адреса не требует новой сборки. Без адреса /api отвечает 502, остальное работает.
+	handle /api/* {
+		reverse_proxy {$BACKEND_URL:http://127.0.0.1:1}
+	}
+
+	handle {
+		root * /srv
+		# Файлы сборки с хешем в имени не меняются: браузер может хранить их долго.
+		header /assets/* Cache-Control "public, max-age=31536000, immutable"
+		header / Cache-Control "no-cache"
+		try_files {path} /index.html
+		file_server
+	}
+}
