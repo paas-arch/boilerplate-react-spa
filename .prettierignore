@@ -3,3 +3,6 @@ dist
 coverage
 yarn.lock
 src/shared/api/generated
+.agents
+.claude
+skills-lock.json
