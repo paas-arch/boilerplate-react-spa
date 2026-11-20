@@ -1,3 +1,4 @@
+/* eslint-disable */ // пример из скила, не код сервиса: старый eslint.config.js сервиса .claude и .agents не исключает
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
